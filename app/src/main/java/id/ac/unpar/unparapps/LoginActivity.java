@@ -21,8 +21,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ssoWebView = (WebView) findViewById(R.id.webview_ssoLogin);
-        final ProgressBar loading = (ProgressBar) findViewById(R.id.bar_ssoProcessLogin);
+        ssoWebView = findViewById(R.id.webview_ssoLogin);
+        final ProgressBar loading = findViewById(R.id.bar_ssoProcessLogin);
         WebSettings ssoSettings = ssoWebView.getSettings();
         ssoSettings.setJavaScriptEnabled(true);
         ssoWebView.setWebViewClient(new WebViewClient(){
