@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/news"
+            android:icon="@drawable/ic_library_books_black_24dp"
+            android:title="@string/app_menu_news" />
+        <item
+            android:id="@+id/portal"
+            android:icon="@drawable/ic_work_black_24dp"
+            android:title="@string/app_menu_portal" />
+        <item
+            android:id="@+id/events"
+            android:icon="@drawable/ic_date_range_black_24dp"
+            android:title="@string/app_menu_events" />
+        <item
+            android:id="@+id/emergency"
+            android:icon="@drawable/ic_local_hospital_black_24dp"
+            android:title="@string/app_menu_emergency" />
+        <item
+            android:id="@+id/toefl"
+            android:icon="@drawable/ic_import_contacts_black_24dp"
+            android:title="@string/app_menu_toefl" />
+        <item
+            android:id="@+id/promo"
+            android:icon="@drawable/ic_local_offer_black_24dp"
+            android:title="@string/app_menu_promo" />
+        <item
+            android:id="@+id/directory"
+            android:icon="@drawable/ic_store_mall_directory_black_24dp"
+            android:title="@string/app_menu_directory" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="@string/app_menu_about" />
+        <!--<item-->
+            <!--android:id="@+id/aspiration"-->
+            <!--android:icon="@drawable/ic_phone_in_talk_black_24dp"-->
+            <!--android:title="@string/app_menu_portal" />-->
+        <!-- Content will be added to this group programatically -->
+
+
+</menu>

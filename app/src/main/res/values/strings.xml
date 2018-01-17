@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">UNPARApps</string>
+    <string name="app_name">UNPAR Apps</string>
+    <string name="app_menu_home">Home</string>
+    <string name="app_menu_news">News</string>
+    <string name="app_menu_portal">Portal</string>
+    <string name="app_menu_events">Events</string>
+    <string name="app_menu_emergency">Emergency</string>
+    <string name="app_menu_toefl">TOEFL</string>
+    <string name="app_menu_promo">Promo</string>
+    <string name="app_menu_directory">Directory</string>
+    <string name="app_menu_about">About Us</string>
+    <string name="appmenuname">Menu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
