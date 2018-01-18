@@ -4,9 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import id.ac.unpar.unparapps.Adapter.NewsAdapter;
 
 
 /**
@@ -64,7 +68,18 @@ public class News extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.action_news, container, false);
+       // return inflater.inflate(R.layout.action_news, container, false);
+        View rootView = inflater.inflate(R.layout.action_news, container, false);
+
+        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
+        rv.setHasFixedSize(true);
+        NewsAdapter adapter = new NewsAdapter(new String[]{"Example One", "Example Two", "Example Three", "Example Four", "Example Five" , "Example Six" , "Example Seven"});
+        rv.setAdapter(adapter);
+
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(llm);
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

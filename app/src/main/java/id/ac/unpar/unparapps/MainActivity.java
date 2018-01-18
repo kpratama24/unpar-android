@@ -10,26 +10,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.NavigableMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private DrawerLayout sDrawerLayout;
     private ActionBarDrawerToggle sToogle;
+   // private CardView news,portal,events,emergency;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sDrawerLayout=(DrawerLayout) findViewById(R.id.drawer);
-        sToogle = new ActionBarDrawerToggle(this,sDrawerLayout,R.string.app_menu_news,R.string.app_menu_portal);
+        sToogle=new ActionBarDrawerToggle(this,sDrawerLayout,R.string.open,R.string.close);
         sDrawerLayout.addDrawerListener(sToogle);
         NavigationView navigationView=(NavigationView) findViewById(R.id.nav_view);
         sToogle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+
 //        Button ssoLogin = findViewById(R.id.button_goLogin);
 //        ssoLogin.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -60,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.toefl :
                 fragmentClass=Toefl.class;
                 break;
-
             case R.id.promo:
                 fragmentClass=Promo.class;
                 break;
@@ -71,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass=About.class;
                 break;
             default:
-                fragmentClass=News.class;
-                break;
+                fragmentClass=Home.class;
+
         }
         try{
             myFragment=(android.support.v4.app.Fragment) fragmentClass.newInstance();
@@ -102,5 +104,37 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        android.support.v4.app.Fragment myFragment=null;
+        Class fragmentClass;
+        switch (v.getId()){
+            case R.id.newsId :
+                fragmentClass=News.class;
+                break;
+
+            case R.id.portalId:
+                fragmentClass=Portal.class;
+                break;
+            case R.id.eventsId :
+                fragmentClass=Events.class;
+                break;
+            case R.id.emergencyId:
+                fragmentClass=Emergency.class;
+                break;
+            default:
+                fragmentClass=MainActivity.class;
+        }
+        try{
+            myFragment=(android.support.v4.app.Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        android.support.v4.app.FragmentManager fragmentManager= getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content,myFragment).commit();
+
     }
 }

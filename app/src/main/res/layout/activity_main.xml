@@ -7,6 +7,8 @@
     android:id="@+id/drawer"
     tools:context="id.ac.unpar.unparapps.MainActivity">
 
+
+
     <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,13 +19,15 @@
     </FrameLayout>
 
 
+
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextColor="@color/colorAccent"
-        app:itemIconTint="@color/colorAccent"
+        app:itemTextColor="@color/colorWhite"
+        app:itemIconTint="@color/colorWhite"
         app:menu="@menu/activity_main_drawer"
         android:background="@color/colorPrimary"
         app:headerLayout="@layout/menu_header">

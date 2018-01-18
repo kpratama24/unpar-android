@@ -1,13 +1,26 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="id.ac.unpar.unparapps.Toefl">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cek Nilai"
+        android:id="@+id/cekNilai"
+        android:enabled="true" />
+    <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview_ssoLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_below="@id/cekNilai"/>
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/bar_ssoProcessLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:drawable/screen_background_dark_transparent" />
+
+</RelativeLayout>

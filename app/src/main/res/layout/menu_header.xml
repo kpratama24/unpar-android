@@ -3,7 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@drawable/wall_10">
+    android:background="@drawable/wall_10"
+    android:gravity="bottom"
+    android:padding="16dp">
     <ImageView
         android:src="@drawable/logo"
         android:layout_width="75dp"

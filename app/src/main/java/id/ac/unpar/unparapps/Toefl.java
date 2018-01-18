@@ -1,12 +1,21 @@
 package id.ac.unpar.unparapps;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -20,6 +29,8 @@ import android.view.ViewGroup;
 public class Toefl extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    WebView ssoWebView;
+    Button firstButton;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -63,8 +74,62 @@ public class Toefl extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_toefl, container, false);
+
+
+        View v=inflater.inflate(R.layout.activity_toefl, container, false);
+        ssoWebView = (WebView) v.findViewById(R.id.webview_ssoLogin);
+        final ProgressBar loading = v.findViewById(R.id.bar_ssoProcessLogin);
+        ssoWebView.loadUrl("http://cdc.unpar.ac.id/old/jadwal-tes-toefl/");
+
+        // Enable Javascript
+        WebSettings webSettings = ssoWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+
+
+        // Force links and redirects to open in the WebView instead of in a browser
+        ssoWebView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                loading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                loading.setVisibility(View.VISIBLE);
+            }
+        });
+        firstButton = (Button) v.findViewById(R.id.cekNilai);
+        String value = firstButton.getText().toString();
+        if(value.equalsIgnoreCase("Cek Nilai")){
+            firstButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // display a message by using a Toast
+                    ssoWebView.loadUrl("http://cdc.unpar.ac.id/old/cek-nilai-toefl/");
+                    //   Toast.makeText(getActivity(), "First Fragment", Toast.LENGTH_LONG).show();
+                    ssoWebView.setWebViewClient(new WebViewClient(){
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            loading.setVisibility(View.GONE);
+                            firstButton.setVisibility(View.GONE);
+                          //  firstButton.setText("Cek Jadwal");
+                        }
+
+                        @Override
+                        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                            loading.setVisibility(View.VISIBLE);
+                         //   firstButton.setText("Cek Jadwal");
+                        }
+                    });
+                }
+            });
+
+        }
+
+        // perform setOnClickListener on first Button
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

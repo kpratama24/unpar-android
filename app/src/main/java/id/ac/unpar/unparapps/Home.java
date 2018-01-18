@@ -4,38 +4,47 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 
-import id.ac.unpar.unparapps.Adapter.DirectoryAdapter;
+
+import com.felipecsl.asymmetricgridview.library.Utils;
+import com.felipecsl.asymmetricgridview.library.model.AsymmetricItem;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import id.ac.unpar.unparapps.Adapter.NewsAdapter;
-import id.ac.unpar.unparapps.Adapter.PromoAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Promo.OnFragmentInteractionListener} interface
+ * {@link Home.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Promo#newInstance} factory method to
+ * Use the {@link Home#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Promo extends Fragment {
+public class Home extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private CardView news,portal,events,emergency;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public Promo() {
+    public Home() {
         // Required empty public constructor
     }
 
@@ -45,11 +54,11 @@ public class Promo extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Promo.
+     * @return A new instance of fragment Home.
      */
     // TODO: Rename and change types and number of parameters
-    public static Promo newInstance(String param1, String param2) {
-        Promo fragment = new Promo();
+    public static Home newInstance(String param1, String param2) {
+        Home fragment = new Home();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,19 +79,54 @@ public class Promo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.activity_promo, container, false);
+        View rv = inflater.inflate(R.layout.activity_home, container, false);
 
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
-        rv.setHasFixedSize(true);
-        PromoAdapter adapter = new PromoAdapter(new String[]{"Example One", "Example Two", "Example Three", "Example Four", "Example Five" , "Example Six" , "Example Seven"});
-        rv.setAdapter(adapter);
+        news=(CardView) rv.findViewById(R.id.newsId);
+        portal=(CardView) rv.findViewById(R.id.portalId);
+        events=(CardView) rv.findViewById(R.id.eventsId);
+        emergency=(CardView) rv.findViewById(R.id.emergencyId);
+        news.setOnClickListener(this);
+        portal.setOnClickListener(this);
+        events.setOnClickListener(this);
+        emergency.setOnClickListener(this);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
+        return rv;
 
-        return rootView;
+     //   return inflater.inflate(R.layout.activity_home, container, false);
+
+
+
     }
+    @Override
+    public void onClick(View v) {
+        android.support.v4.app.Fragment myFragment=null;
+        Class fragmentClass;
+        switch (v.getId()){
+            case R.id.newsId :
+                fragmentClass=News.class;
+                break;
 
+            case R.id.portalId:
+                fragmentClass=Portal.class;
+                break;
+            case R.id.eventsId :
+                fragmentClass=Events.class;
+                break;
+            case R.id.emergencyId:
+                fragmentClass=Emergency.class;
+                break;
+            default:
+                fragmentClass=MainActivity.class;
+        }
+        try{
+            myFragment=(android.support.v4.app.Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -93,7 +137,6 @@ public class Promo extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
- 
     }
 
     @Override
