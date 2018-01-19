@@ -5,9 +5,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,6 +33,7 @@ public class Toefl extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     WebView ssoWebView;
+    String summary=null;
     Button firstButton;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -92,6 +96,25 @@ public class Toefl extends Fragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 loading.setVisibility(View.GONE);
+               // ssoWebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementByClass('content').innerHTML+'</html>');");
+
+              //  String summary = "<html><body>You scored <b>192</b> points.</body></html>";
+             //  ssoWebView.setWebChromeClient(new WebChromeClient());
+               // ssoWebView.loadData(summary, "text/html", null);
+                ssoWebView.evaluateJavascript(
+                        "(function() { return ('<html>'+document.getElementsByTagName('section')[0].innerHTML+'</html>'); })();",
+                        new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String html) {
+                                 summary = "<html><body>"+html+"</body></html>";
+
+                                Log.d("HTML", html);
+                                // code here
+                            }
+                        });
+
+            //    ssoWebView.loadData(summary,"text/html", null);
+
             }
 
             @Override
@@ -99,6 +122,7 @@ public class Toefl extends Fragment {
                 loading.setVisibility(View.VISIBLE);
             }
         });
+
         firstButton = (Button) v.findViewById(R.id.cekNilai);
         String value = firstButton.getText().toString();
         if(value.equalsIgnoreCase("Cek Nilai")){
@@ -106,13 +130,16 @@ public class Toefl extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // display a message by using a Toast
-                    ssoWebView.loadUrl("http://cdc.unpar.ac.id/old/cek-nilai-toefl/");
+                  ssoWebView.loadUrl("http://cdc.unpar.ac.id/old/cek-nilai-toefl/");
                     //   Toast.makeText(getActivity(), "First Fragment", Toast.LENGTH_LONG).show();
                     ssoWebView.setWebViewClient(new WebViewClient(){
                         @Override
                         public void onPageFinished(WebView view, String url) {
                             loading.setVisibility(View.GONE);
                             firstButton.setVisibility(View.GONE);
+//                            String summary = "<html><body>You scored <b>192</b> points.</body></html>";
+//                            ssoWebView.loadData(summary, "text/html", null);
+//                            ssoWebView.loadUrl("javascript:(function() { document.getElementById('email_field').value = '" + email + "'; })()");
                           //  firstButton.setText("Cek Jadwal");
                         }
 

@@ -1,5 +1,6 @@
 package id.ac.unpar.unparapps;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.Response;
+import com.google.gson.Gson;
+
+import java.util.List;
+import java.util.Map;
 
 import id.ac.unpar.unparapps.Adapter.NewsAdapter;
 
@@ -22,6 +35,20 @@ import id.ac.unpar.unparapps.Adapter.NewsAdapter;
  * create an instance of this fragment.
  */
 public class News extends Fragment {
+    String url = "http://pm.unpar.ac.id/wp-json/wp/v2/posts?fields=id,title,date,content";
+    List<Object> list;
+    Gson gson;
+  //  ListView postList;
+    Map<String,Object> mapPost;
+    Map<String,Object> mapTitle;
+ //   Map<Double,Object> mapId;
+    Map<String,Object> mapContent;
+ //   int postID;
+    String postTitle[],postContent[];
+    double postId[];
+    NewsAdapter adapter;
+    RecyclerView rv;
+    ProgressDialog progressDialog;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,11 +98,43 @@ public class News extends Fragment {
        // return inflater.inflate(R.layout.action_news, container, false);
         View rootView = inflater.inflate(R.layout.action_news, container, false);
 
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
+        rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
         rv.setHasFixedSize(true);
-        NewsAdapter adapter = new NewsAdapter(new String[]{"Example One", "Example Two", "Example Three", "Example Four", "Example Five" , "Example Six" , "Example Seven"});
-        rv.setAdapter(adapter);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                gson = new Gson();
+                list = (List) gson.fromJson(s, List.class);
+                postTitle = new String[list.size()];
+                postContent =new String[list.size()];
+                postId=new double[list.size()];
+                for(int i=0;i<list.size();++i){
+                    mapPost = (Map<String,Object>)list.get(i);
+                    mapTitle = (Map<String, Object>) mapPost.get("title");
+                    mapContent = (Map<String, Object>) mapPost.get("content");
+                  //  mapId = (Map<Double, Object>) mapPost.get("id");
+                    postTitle[i] = (String) mapTitle.get("rendered");
+                    postContent[i]=(String) mapContent.get("rendered");
+                    postId[i]= (Double) mapPost.get("id");
+                    progressDialog.dismiss();
+                }
+                adapter = new NewsAdapter(postTitle,postId,postContent);
+                rv.setAdapter(adapter);
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getActivity(), "Some error occurred", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
+        rQueue.add(request);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 
