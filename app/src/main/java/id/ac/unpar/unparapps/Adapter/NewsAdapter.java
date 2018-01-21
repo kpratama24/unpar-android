@@ -1,6 +1,7 @@
 package id.ac.unpar.unparapps.Adapter;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -34,10 +35,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             mTextView = (TextView) v.findViewById(R.id.tv_text);
 
         }
-        public void setItem(String item) {
-            mItem = item;
-            mTextView.setText(item);
-        }
         @Override
         public void onClick(View v) {
             Intent intent=new Intent(v.getContext(),NewsPosts.class);
@@ -45,6 +42,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             intent.putExtra("title",mDataset[getPosition()]);
             intent.putExtra("content",content[getPosition()]);
             v.getContext().startActivity(intent);
+
             Log.d("test", "onClick " + mDataset[getPosition()]+ " " + (int)dataId[getPosition()]+" "+content[getPosition()]);
         }
     }
@@ -65,6 +63,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
         holder.mTextView.setText(mDataset[position]);
+
+
+
     }
 
     @Override

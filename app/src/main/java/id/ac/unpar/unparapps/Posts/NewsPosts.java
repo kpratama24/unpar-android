@@ -1,9 +1,19 @@
 package id.ac.unpar.unparapps.Posts;
 
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +34,7 @@ import id.ac.unpar.unparapps.R;
  * Created by Carissa on 1/19/2018.
  */
 
-public class NewsPosts extends AppCompatActivity {
+public class NewsPosts extends Activity {
     TextView title;
     TextView content;
     ProgressDialog progressDialog;
@@ -36,11 +46,15 @@ public class NewsPosts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.news_content);
 
         final String id = getIntent().getExtras().getString("id");
         final String t = getIntent().getExtras().getString("title");
         final String c = getIntent().getExtras().getString("content");
+
 
         title = (TextView) findViewById(R.id.title);
         content = (TextView)findViewById(R.id.content);
@@ -49,20 +63,31 @@ public class NewsPosts extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
-
         String url = "http://pm.unpar.ac.id/wp-json/wp/v2/posts/"+id+"?fields=id,title,date,content";
        // String url = "http://www.thejavaprogrammer.com/wp-json/wp/v2/posts/"+id+"?fields=title,content";
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarId);
+               // toolbar.setBackground(new ColorDrawable(Color.parseColor("#80000000")));
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+
                 gson = new Gson();
                 mapPost = (Map<String, Object>) gson.fromJson(s, Map.class);
                 mapTitle = (Map<String, Object>) mapPost.get("title");
+
                 mapContent = (Map<String, Object>) mapPost.get("content");
-                String summary = "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body>"+mapContent.get("rendered").toString()+"</body></html>";
+                CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+                collapsingToolbar.setTitle(mapTitle.get("rendered").toString());
+                String summary = "<head><body>"+mapContent.get("rendered").toString()+"</body>";
                 title.setText(mapTitle.get("rendered").toString());
-                content.setText(mapContent.get("rendered").toString());
+                content.setText(Html.fromHtml(summary));
             //    content.loadData(summary,"text/html","UTF-8");
 
                 progressDialog.dismiss();

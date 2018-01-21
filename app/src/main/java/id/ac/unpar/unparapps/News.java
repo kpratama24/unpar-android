@@ -35,15 +35,12 @@ import id.ac.unpar.unparapps.Adapter.NewsAdapter;
  * create an instance of this fragment.
  */
 public class News extends Fragment {
-    String url = "http://pm.unpar.ac.id/wp-json/wp/v2/posts?fields=id,title,date,content";
+    String url = "http://pm.unpar.ac.id/wp-json/wp/v2/posts?fields=id,title,date,content,categories&per_page=25&categories_exclude=275,276,277,287,288  ";
     List<Object> list;
     Gson gson;
-  //  ListView postList;
     Map<String,Object> mapPost;
     Map<String,Object> mapTitle;
- //   Map<Double,Object> mapId;
     Map<String,Object> mapContent;
- //   int postID;
     String postTitle[],postContent[];
     double postId[];
     NewsAdapter adapter;
@@ -113,13 +110,16 @@ public class News extends Fragment {
                 postContent =new String[list.size()];
                 postId=new double[list.size()];
                 for(int i=0;i<list.size();++i){
+
                     mapPost = (Map<String,Object>)list.get(i);
                     mapTitle = (Map<String, Object>) mapPost.get("title");
                     mapContent = (Map<String, Object>) mapPost.get("content");
-                  //  mapId = (Map<Double, Object>) mapPost.get("id");
-                    postTitle[i] = (String) mapTitle.get("rendered");
-                    postContent[i]=(String) mapContent.get("rendered");
-                    postId[i]= (Double) mapPost.get("id");
+
+                        postTitle[i] = (String) mapTitle.get("rendered");
+                        postContent[i]=(String) mapContent.get("rendered");
+                        postId[i]= (Double) mapPost.get("id");
+
+
                     progressDialog.dismiss();
                 }
                 adapter = new NewsAdapter(postTitle,postId,postContent);

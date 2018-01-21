@@ -4,14 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import id.ac.unpar.unparapps.Adapter.DirectoryAdapter;
-import id.ac.unpar.unparapps.Adapter.EmergencyAdapter;
+import com.astuetz.PagerSlidingTabStrip;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import id.ac.unpar.unparapps.Pager.DirectoryPager;
+//import id.ac.unpar.unparapps.Adapter.EmergencyAdapter;
 
 
 /**
@@ -23,6 +29,11 @@ import id.ac.unpar.unparapps.Adapter.EmergencyAdapter;
  * create an instance of this fragment.
  */
 public class Directory extends Fragment {
+
+    private MyPagerAdapter adapter;
+    private SystemBarTintManager mTintManager;
+    private ViewPager pager;
+    private PagerSlidingTabStrip tabs;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,7 +58,7 @@ public class Directory extends Fragment {
      * @return A new instance of fragment Directory.
      */
     // TODO: Rename and change types and number of parameters
-    public static Directory newInstance(String param1, String param2) {
+    public Directory newInstance(String param1, String param2) {
         Directory fragment = new Directory();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -69,18 +80,31 @@ public class Directory extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.activity_directory, container, false);
+        View v = inflater.inflate(R.layout.activity_directory, container, false);
+        // Initialize the ViewPager and set an adapter
+         pager = (ViewPager) v.findViewById(R.id.pager);
+        tabs = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
+        mTintManager = new SystemBarTintManager(getActivity());
+        mTintManager.setStatusBarTintEnabled(true);
+        adapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        tabs.setViewPager(pager);
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+        pager.setPageMargin(pageMargin);
+        pager.setCurrentItem(0);
+      //  changeColor(ContextCompat.getColor(v.getContext(), R.color.colorPrimary));
 
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
-        rv.setHasFixedSize(true);
-        DirectoryAdapter adapter = new DirectoryAdapter(new String[]{"Biro", "Kemahasiswaan", "Fakultas"});
-        rv.setAdapter(adapter);
+        tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
+            @Override
+            public void onTabReselected(int position) {
+                Toast.makeText(getContext(), "Tab reselected: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        return rootView;
+        return v;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -114,5 +138,30 @@ public class Directory extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private final String[] TITLES = {"Biro", "Kemahasiswaan", "Fakultas"};
+
+        MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return DirectoryPager.newInstance(position);
+        }
+
     }
 }

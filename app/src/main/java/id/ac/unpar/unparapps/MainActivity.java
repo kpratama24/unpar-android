@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import java.util.NavigableMap;
@@ -24,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         sDrawerLayout=(DrawerLayout) findViewById(R.id.drawer);
         sToogle=new ActionBarDrawerToggle(this,sDrawerLayout,R.string.open,R.string.close);
@@ -32,6 +37,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sToogle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+
+        android.support.v4.app.Fragment myFragment=null;
+        Class fragmentClass;
+            fragmentClass=Home.class;
+
+        try{
+            myFragment=(android.support.v4.app.Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        android.support.v4.app.FragmentManager fragmentManager= getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content,myFragment).commit();
 
 //        Button ssoLogin = findViewById(R.id.button_goLogin);
 //        ssoLogin.setOnClickListener(new View.OnClickListener() {
@@ -108,33 +126,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        android.support.v4.app.Fragment myFragment=null;
-        Class fragmentClass;
-        switch (v.getId()){
-            case R.id.newsId :
-                fragmentClass=News.class;
-                break;
-
-            case R.id.portalId:
-                fragmentClass=Portal.class;
-                break;
-            case R.id.eventsId :
-                fragmentClass=Events.class;
-                break;
-            case R.id.emergencyId:
-                fragmentClass=Emergency.class;
-                break;
-            default:
-                fragmentClass=MainActivity.class;
-        }
-        try{
-            myFragment=(android.support.v4.app.Fragment) fragmentClass.newInstance();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        android.support.v4.app.FragmentManager fragmentManager= getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content,myFragment).commit();
+//        android.support.v4.app.Fragment myFragment=null;
+//        Class fragmentClass;
+//        switch (v.getId()){
+//            case R.id.newsId :
+//                fragmentClass=News.class;
+//                break;
+//
+//            case R.id.portalId:
+//                fragmentClass=Portal.class;
+//                break;
+//            case R.id.eventsId :
+//                fragmentClass=Events.class;
+//                break;
+//            case R.id.emergencyId:
+//                fragmentClass=Emergency.class;
+//                break;
+//            default:
+//                fragmentClass=MainActivity.class;
+//        }
+//        try{
+//            myFragment=(android.support.v4.app.Fragment) fragmentClass.newInstance();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        android.support.v4.app.FragmentManager fragmentManager= getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content,myFragment).commit();
 
     }
 }

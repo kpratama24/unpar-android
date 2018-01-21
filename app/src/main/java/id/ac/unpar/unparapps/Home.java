@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 
 
@@ -37,7 +38,7 @@ public class Home extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private CardView news,portal,events,emergency;
+    private FrameLayout news,portal,events,emergency;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -80,11 +81,11 @@ public class Home extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rv = inflater.inflate(R.layout.activity_home, container, false);
-
-        news=(CardView) rv.findViewById(R.id.newsId);
-        portal=(CardView) rv.findViewById(R.id.portalId);
-        events=(CardView) rv.findViewById(R.id.eventsId);
-        emergency=(CardView) rv.findViewById(R.id.emergencyId);
+//
+        news=(FrameLayout) rv.findViewById(R.id.newsId);
+        portal=(FrameLayout) rv.findViewById(R.id.portalId);
+        events=(FrameLayout) rv.findViewById(R.id.eventsId);
+        emergency=(FrameLayout) rv.findViewById(R.id.emergencyId);
         news.setOnClickListener(this);
         portal.setOnClickListener(this);
         events.setOnClickListener(this);
@@ -124,6 +125,8 @@ public class Home extends Fragment implements View.OnClickListener {
         catch (Exception e){
             e.printStackTrace();
         }
+        android.support.v4.app.FragmentManager fragmentManager= getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content,myFragment).commit();
 
 
     }
