@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\non-kampus\unparapps android\unpar-android\UNPARApps.iml" filepath="D:\non-kampus\unparapps android\unpar-android\UNPARApps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UNPAR-APPS.iml" filepath="$PROJECT_DIR$/UNPAR-APPS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/unpar-android.iml" filepath="$PROJECT_DIR$/unpar-android.iml" />
     </modules>
   </component>
 </project>
